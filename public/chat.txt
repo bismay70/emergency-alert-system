@@ -1,0 +1,558 @@
+ResQ Project Knowledge Base
+For chatbot dummy conversations and website/project explanations.
+Sensitive configuration, credentials, keys, tokens, and environment-variable details are intentionally omitted.
+
+PROJECT SUMMARY
+ResQ is an indoor and city-wide crisis-response demo platform. It helps hotels, campuses, hospitals, malls, large buildings, and smart-city command teams detect emergencies, verify incidents, coordinate responders, and guide people to safety.
+
+The project combines a React frontend, Express backend, real-time style emergency dashboards, editable indoor floor maps, simulated people locations, hazard simulation, safest-route calculation, CCTV/YOLO demo workflows, Twilio-style alert setup, and map-assisted response tools.
+
+Core idea:
+CCTV sees. YOLO interprets. Users report. The system verifies. Staff respond. Emergency services receive cleaner incident information.
+
+LOCAL RUNNING DETAILS
+Frontend development server: http://localhost:5174
+Backend API server: http://localhost:4000
+Main app route: /
+Backend health route: /api/health
+
+Common commands:
+npm install
+npm run dev
+npm run typecheck
+npm test
+npm run build
+npm run db:push
+
+TECH STACK
+Frontend:
+React 19
+TypeScript
+Vite
+Tailwind CSS via the Vite plugin
+Lucide React icons
+Framer Motion
+GSAP
+ONNX Runtime Web for browser-side AI model inference
+
+Backend:
+Node.js
+Express
+TypeScript
+tsx
+Zod validation
+Multer for uploads
+PostgreSQL support through pg
+Twilio package for notification sending
+
+Testing:
+Vitest
+Testing Library
+jsdom
+
+PRODUCT POSITIONING
+ResQ is a safety intelligence platform for fast emergency response.
+It is designed for:
+Hotels
+Large commercial buildings
+Campuses
+Hospitals
+Malls
+Smart cities
+City command centers
+Security teams
+Fire response teams
+Medical response teams
+Disaster response teams
+
+Primary value:
+Detect threats early, verify incidents, reduce false alarms, guide evacuation, coordinate responders, and keep every role informed from one dashboard.
+
+MAIN WEBSITE / HOMEPAGE CONTENT
+Brand: ResQ
+Category: Indoor crisis-response platform
+
+Hero message:
+Turn building maps, sensors, cameras, BLE beacons, and QR checkpoints into live evacuation guidance for hotels and large facilities.
+
+Homepage status preview:
+Floor graph online
+2 exits clear
+1 hazard isolated
+
+Homepage navigation:
+How it works
+Platform
+Hardware
+Contact
+Dashboard
+
+How ResQ Works:
+1. Upload the floor plan
+Start from DWG, DXF, SVG, or image plans. Admins can keep editing nodes after import.
+
+2. Mark building nodes
+Rooms, junctions, stairs, exits, cameras, sensors, BLE beacons, QR checkpoints, and actuators become one editable graph.
+
+3. Detect or simulate danger
+Camera and sensor events map hazards to the nearest node and block unsafe paths.
+
+4. Guide people out
+BLE estimates and QR confirmations feed safest-route guidance for guests, staff, and responders.
+
+Platform modules:
+Admin map onboarding
+Staff incident monitoring
+Guest evacuation guidance
+Sensor and camera event API
+BLE and QR checkpoint support
+Neon/Postgres-ready data model
+
+Hardware section:
+ResQ is edge and IoT ready.
+Hazard detection can run locally on a Raspberry Pi, mini PC, laptop, NVR server, ESP32-CAM, IP camera, or CCTV feed.
+Only event data should be sent to the backend.
+
+Hardware categories:
+Camera / CCTV
+Fire / smoke / gas
+Database storage
+Manual node editing
+
+CITY-WIDE WEBSITE SECTIONS
+ResQ also includes a more cinematic city-wide landing page with sections for:
+Hero
+About
+Proactive operations
+Platform features
+Use cases
+Testimonials
+Message/contact
+Footer
+
+Proactive operations positioning:
+ResQ is optimized for saving lives.
+It becomes an embedded safety layer across hotels, campuses, hospitals, and smart cities.
+It focuses on faster response, stronger coordination, and real-world protection.
+
+Key proactive operations messages:
+Intelligence That Acts Instantly
+The AI workforce continuously monitors CCTV, fire systems, panic alerts, and crowd behavior to detect threats early and reduce false alarms.
+
+From Detection to Action
+ResQ is not just alerts. It supports automated dispatch, evacuation guidance, responder routing, and unified communication.
+
+One View of Every Incident
+The platform shows what happened, where it happened, who needs help, and who is responding.
+
+Designed for Modern Safety Teams
+Security staff, admins, responders, and citizens operate through role-based dashboards for rapid decisions and coordinated action.
+
+Marketing highlights:
+See Threats. Verify Fast. Respond Smarter.
+One Platform for Every Emergency.
+From Alert to Rescue in Seconds.
+Intelligence That Protects People.
+Safety Infrastructure for the Modern World.
+
+Platform architecture concepts:
+Detection: YOLO + sensors + manual reports.
+Verification: Cross-checking signals to reduce false alarms.
+Coordination: Staff, responders, and emergency services sync.
+Localized Assistance: Routing who is near, who can help, and where to go.
+
+Scalable architecture concepts:
+Edge Layer: YOLO runs on camera feeds near the site. Only detections go to the backend.
+Backend Event Layer: One service receives alerts and can handle large incident volume.
+Real-time Layer: Live updates can stream map and alert status to dashboards.
+Data Layer: Stores incident logs, indexed floor plans, and spatial routing data.
+Policy Layer: Multi-role access for guests, staff, admins, and responders.
+
+CITY USE CASES AND ROUTES
+/city
+City dashboards landing page.
+
+/city/fire
+Fire Detection dashboard.
+Purpose: Monitor fire, smoke, visibility, hazard risk, people count, AI confidence, live feed, evacuation mode, alerts, and fire/smoke model detection.
+
+/city/security
+Intrusion Detection dashboard.
+Purpose: Monitor suspicious activity, people count, incidents, AI confidence, surveillance status, live feed, lockdown action, alerts, and person/intrusion model detection.
+
+/city/medical
+Medical Emergency / Ambulance dashboard.
+Purpose: Medical response dashboard for emergency medical coordination.
+
+/city/disaster
+Disaster Management dashboard.
+Purpose: Disaster and collapse-oriented response monitoring with FallSafe/collapse detection model support.
+
+/city/cctv
+Smart CCTV City Monitoring dashboard.
+Purpose: Broader city CCTV monitoring.
+
+/city/unified
+Unified Command Center dashboard.
+Purpose: Centralized command overview for multi-incident, multi-role response.
+
+LOGIN AND ROLE FLOW
+/login
+Login page.
+
+/select-mode
+Mode selector for authenticated roles.
+Users can choose local building mode or city-wide mode.
+
+Roles supported by the local building demo:
+admin
+staff
+user
+
+Local building mode:
+/dashboard
+
+Admin dashboard:
+Map onboarding, upload floor map, place/edit/delete nodes, connect graph edges, simulate hazards, simulate BLE/QR people locations, calculate routes, review final nodes.
+
+Staff dashboard:
+Monitor hazards, people locations, route state, exits, and response actions.
+
+User dashboard:
+Pick a simulated user, confirm QR checkpoint, and view step-by-step evacuation guidance.
+
+Additional local dashboard routes:
+/dashboard/cctv
+CCTV fire/smoke hazard simulation and YOLO model detection.
+
+/dashboard/collapse
+Collapse/fall detection page using the FallSafe-style model route.
+
+/dashboard/restricted
+Restricted-area intrusion detection using person detection.
+
+/dashboard/assistant
+Assistant map page for chat plus map assistance.
+
+/dashboard/analytics
+Analytics page.
+
+FLOOR MAP AND CAD DETAILS
+ResQ supports floor plans and building maps.
+
+Accepted upload types:
+DWG
+DXF
+SVG
+PNG
+JPG
+JPEG
+
+Best floor map requirements:
+One floor per DWG/DXF file.
+Use model-space geometry, not a paper layout screenshot.
+Real-world scale is preferred.
+Separate layers are preferred for walls, rooms, doors, stairs, exits, fire equipment, cameras, sensors, beacons, and QR points.
+Avoid exploded title blocks, unrelated furniture, heavy hatches, and duplicate routing lines.
+
+DXF parsing support:
+Lines
+Lightweight polylines
+Legacy polylines
+Circles
+Arcs
+TEXT labels
+MTEXT labels
+
+DXF import behavior:
+Closed room polygons on room-like layers can become editable room nodes at the room center.
+Labels inside room polygons can become node names.
+Corridor, path, hallway, exit, stair, camera, sensor, BLE, QR, actuator, and extinguisher layers/text can create node candidates.
+
+DWG behavior:
+DWG files are accepted and stored.
+They may be marked as needing a converter unless the deployment configures a DWG conversion tool.
+Admins can still place and edit nodes manually after upload.
+
+NODE TYPES
+room
+pathway
+corridor
+junction
+staircase
+exit
+extinguisher
+camera
+sensor
+actuator
+ble_beacon
+qr_checkpoint
+
+EDGE AND ROUTING CONCEPTS
+Graph nodes represent rooms, exits, devices, corridors, and checkpoints.
+Graph edges connect nodes.
+Edges can be open or blocked.
+Hazards can block unsafe nodes and edges.
+The route engine evaluates available exits and calculates the safest route.
+If a person has BLE or QR location data, the system can resolve their current start node.
+Route results include status, node path, selected exit, total distance, blocked nodes, blocked edges, step-by-step instructions, and a user-facing message.
+
+PEOPLE LOCATION CONCEPTS
+People can be represented as simulated locations.
+Roles include:
+guest
+staff
+contractor
+unknown
+
+Location sources:
+BLE beacon estimate
+QR checkpoint confirmation
+Confidence score
+Updated timestamp
+
+HAZARD CONCEPTS
+Hazard types:
+fire
+smoke
+gas
+structural
+security
+other
+
+Hazard severities:
+low
+medium
+high
+critical
+
+Hazards can have:
+Label
+Node association
+Coordinates
+Radius
+Severity
+Active state
+Creation time
+
+AI AND CCTV MODEL DETAILS
+ResQ includes browser-side model workflows for:
+Fire/smoke detection
+Collapse/fall detection
+Person/intrusion detection
+
+Model status routes:
+/api/models/local-yolo/status
+/api/models/fallsafe/status
+/api/models/person-coco/status
+
+Model file routes:
+/api/models/local-yolo/model.onnx
+/api/models/fallsafe/model.onnx
+/api/models/person-coco/model.onnx
+
+Recommended AI model families:
+Ultralytics-compatible YOLO fire/smoke model
+FallSafe-style collapse/fall detector exported to ONNX
+COCO person detector exported to ONNX
+Roboflow fire/smoke detector exported to ONNX or PyTorch
+Site-specific custom model trained on real building camera angles
+
+Important safety note:
+Camera hazard detection should run locally on an edge device inside the building.
+The backend should receive only event data.
+The app is a demo and should be retrained, validated, and tested with real camera angles before safety-critical use.
+
+Edge AI event contract:
+cameraId
+hazardType
+confidence
+timestamp
+bbox
+nearestNodeId
+
+API OVERVIEW
+GET /api/health
+Returns service health and whether persistence is memory/demo mode or database-ready mode.
+
+GET /api/bootstrap
+Returns app state, supported roles, node types, CAD requirements, and AI recommendation metadata.
+
+POST /api/cad/upload
+Uploads a floor map file.
+
+POST /api/cad/reset
+Resets to sample floor map data.
+
+POST /api/nodes
+Creates a graph node.
+
+PATCH /api/nodes/:id
+Updates a graph node.
+
+DELETE /api/nodes/:id
+Deletes a graph node.
+
+POST /api/nodes/auto-cameras
+Generates camera nodes from floor map or inferred data.
+
+POST /api/edges
+Creates an edge between graph nodes.
+
+PATCH /api/edges/:id
+Updates an edge.
+
+DELETE /api/edges/:id
+Deletes an edge.
+
+POST /api/edges/auto-generate
+Automatically generates path edges.
+
+POST /api/people
+Creates a person location.
+
+PATCH /api/people/:id
+Updates a person location.
+
+POST /api/hazards
+Creates a hazard.
+
+DELETE /api/hazards/:id
+Clears one hazard.
+
+POST /api/hazards/clear
+Clears all hazards.
+
+POST /api/routes/calculate
+Calculates an evacuation route.
+
+POST /api/assistant/chat
+Handles assistant chat. If advanced assistant configuration is not available, it falls back to concise built-in replies for building response, evacuation communication, directions, nearby hospitals, and fire stations.
+
+POST /api/notify/send
+Sends alert notifications through configured notification providers.
+
+DATABASE DESIGN OVERVIEW
+The production-ready schema includes:
+companies
+buildings
+floors
+floor_maps
+graph_nodes
+graph_edges
+people_locations
+incidents
+hazards
+response_actions
+
+Data relationships:
+A company can have buildings.
+A building can have floors.
+A floor can have a floor map.
+A floor has graph nodes and graph edges.
+People locations are associated with floors.
+Incidents are associated with floors.
+Hazards can be associated with incidents and floors.
+Response actions are associated with incidents.
+
+NOTIFICATIONS
+The project includes a notification center and alert setup UI.
+It can be configured for SMS or WhatsApp-style hazard alerts.
+Notifications can represent fire, collapse, intrusion, and system events.
+
+Notification examples:
+Fire hazard detected near a camera or node.
+Collapse emergency detected.
+Restricted area intrusion detected.
+System alert or status update.
+
+ASSISTANT MAP PAGE
+The assistant map page supports chat-assisted map actions.
+It can help with:
+Building response questions
+Evacuation communication
+Directions
+Nearby hospitals
+Nearby fire stations
+
+When full external map integration is available, it can show directions and nearby places.
+Without external map setup, it still gives fallback text replies.
+
+SAMPLE CHATBOT RESPONSES
+User: What is ResQ?
+Assistant: ResQ is an emergency response platform for buildings and city operations. It combines CCTV AI, sensors, floor maps, people locations, alerts, and route calculation to help teams detect danger and guide people to safety.
+
+User: Who is ResQ for?
+Assistant: ResQ is designed for hotels, campuses, hospitals, malls, large facilities, smart cities, security teams, fire teams, medical teams, and disaster response teams.
+
+User: How does ResQ detect danger?
+Assistant: ResQ can use CCTV/YOLO detection, sensor alarms, manual reports, and simulated hazards. The system maps the danger to a floor node, marks unsafe areas, and helps calculate safer routes.
+
+User: What happens after a hazard is detected?
+Assistant: The platform verifies the incident, updates dashboards, blocks unsafe paths, notifies staff, and can guide users or responders toward safer exits or response actions.
+
+User: What dashboards are available?
+Assistant: ResQ includes local building dashboards for admins, staff, and users, plus city dashboards for fire detection, intrusion detection, medical emergency, disaster management, smart CCTV monitoring, and unified command.
+
+User: What can the admin dashboard do?
+Assistant: The admin dashboard can upload a floor map, edit nodes, connect edges, add hazards, simulate people locations, generate paths or cameras, and calculate evacuation routes.
+
+User: What can staff see?
+Assistant: Staff can monitor active hazards, people locations, route status, exits, and response actions so they can coordinate during an emergency.
+
+User: What can users see?
+Assistant: Users can select their simulated identity, confirm QR checkpoints, and view step-by-step evacuation instructions.
+
+User: What is the fire dashboard?
+Assistant: The fire dashboard monitors fire and smoke risk using a live feed, AI confidence, visibility, people count, hazard warnings, evacuation controls, and model-based detection.
+
+User: What is the intrusion dashboard?
+Assistant: The intrusion dashboard monitors suspicious activity and person detection using a live feed, threat indicators, people count, incidents, lockdown action, and AI model results.
+
+User: What files can I upload for a floor plan?
+Assistant: ResQ accepts DWG, DXF, SVG, PNG, JPG, and JPEG files. DXF files are parsed most deeply for lines, shapes, labels, and possible room/node inference.
+
+User: Does ResQ need a database?
+Assistant: The demo can run with in-memory state for easy presentations. The project also includes a Postgres-ready schema for production persistence.
+
+User: Can ResQ use CCTV?
+Assistant: Yes. It is designed to connect existing CCTV or camera feeds, run AI detection near the site, and send only event data to the backend.
+
+User: Is this production-ready for real emergencies?
+Assistant: It is a demo foundation. Before safety-critical use, models, routing, sensors, notifications, permissions, and deployment must be validated with real building layouts and real camera conditions.
+
+User: What makes ResQ different from a normal CCTV system?
+Assistant: Normal CCTV shows video. ResQ combines detection, verification, routing, alerts, people location, and responder coordination in one incident workflow.
+
+User: How does ResQ reduce false alarms?
+Assistant: It cross-checks multiple signals such as AI confidence, sensors, and location consistency. Unverified reports can be flagged instead of immediately treated as full emergencies.
+
+User: What is the Edge AI contract?
+Assistant: Edge AI should send event data such as camera ID, hazard type, confidence, timestamp, bounding box, and nearest node ID rather than sending raw video to the backend.
+
+User: What is the safest-route engine?
+Assistant: It evaluates graph nodes and edges, blocks areas affected by hazards, checks available exits, and returns a step-by-step route to the safest reachable exit.
+
+User: What does BLE/QR support do?
+Assistant: BLE gives approximate location near beacons, while QR checkpoints can confirm a person's location. These signals help the route engine start guidance from the right place.
+
+User: What is the unified command center?
+Assistant: It is a city-wide command dashboard concept that gives responders one central view across incidents, teams, alerts, and operational status.
+
+CHATBOT BEHAVIOR GUIDELINES
+Answer in a calm, practical, safety-focused tone.
+Keep responses concise unless the user asks for detail.
+Explain ResQ as a demo emergency intelligence and response platform.
+Do not claim the system is certified for real-life emergency use.
+Do not provide or reveal credentials, tokens, keys, or private configuration.
+When asked about setup, mention install, dev server, frontend URL, backend URL, and database-ready design without exposing secrets.
+When asked about real deployment, recommend validation, security review, model testing, incident playbooks, and integration with official emergency services.
+
+IMPORTANT LIMITATIONS
+This project is a demo and prototype-style implementation.
+In-memory state is suitable for presentations.
+Database schema exists for production persistence, but production storage logic must be completed and hardened.
+AI detection should be retrained and validated for the actual deployment environment.
+Emergency routing should be reviewed by safety professionals.
+Notification sending should be tested carefully to avoid false or accidental emergency messages.
+Credentials and private configuration must never be placed in public files.
