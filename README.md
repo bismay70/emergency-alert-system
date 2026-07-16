@@ -2,9 +2,11 @@
 
 <img src="public/logo.png" alt="ResQ Logo" width="160" />
 
-<video width="800" controls autoplay muted loop style="border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
-  <source src="https://res.cloudinary.com/dbnnd43kl/video/upload/v1784194291/ResQvideo_jufspn.mp4" type="video/mp4">
-</video>
+<a href="https://res.cloudinary.com/dbnnd43kl/video/upload/v1784194291/ResQvideo_jufspn.mp4" target="_blank">
+  <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="Click to watch ResQ Demo Video" width="800" />
+</a>
+<br/>
+<a href="https://res.cloudinary.com/dbnnd43kl/video/upload/v1784194291/ResQvideo_jufspn.mp4" target="_blank"><b>▶️ Click here to watch the ResQ Demo Video</b></a>
 
 # ResQ
 
