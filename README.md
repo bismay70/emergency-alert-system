@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="apps/web/public/logo.png" alt="ResQ Logo" width="160" />
+<img src="public/logo.png" alt="ResQ Logo" width="160" />
 
 <a href="" target="_blank">
   <img src="https://img.youtube.com/vi/YOUR_VIDEO_ID/maxresdefault.jpg" alt="Watch the video" width="500" />
