@@ -2,7 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ShieldAlert, MessageSquare, Bot, Send } from "lucide-react";
+import { Menu, X, ShieldAlert, MessageSquare, Bot, Send, LogOut } from "lucide-react";
+import { onAuthStateChanged, User, signOut } from "firebase/auth";
+import { auth } from "../../firebase";
 
 const navLinks = [
   { label: "About Us", href: "#about" },
@@ -21,6 +23,7 @@ interface HeroSectionProps {
 export default function HeroSection({ onNavigateTo }: HeroSectionProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [chatInput, setChatInput] = useState("");
   const [messages, setMessages] = useState([
@@ -32,8 +35,24 @@ export default function HeroSection({ onNavigateTo }: HeroSectionProps) {
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+    });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      unsubscribe();
+    };
   }, []);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error("Error signing out", error);
+    }
+  };
 
   return (
     <div className="relative min-h-screen bg-black text-white overflow-hidden selection:bg-red-500/30">
@@ -104,8 +123,29 @@ export default function HeroSection({ onNavigateTo }: HeroSectionProps) {
           </nav>
 
           <div className="hidden md:flex items-center gap-4">
-            <button onClick={() => onNavigateTo("/login")} className="text-sm font-semibold text-white hover:text-gray-300 transition-colors">Login</button>
-            <button className="text-sm font-semibold bg-white text-black px-6 py-2.5 rounded-sm hover:bg-gray-200 transition-colors">Sign Up</button>
+            {currentUser ? (
+              <div className="flex items-center gap-3">
+                <div style={{ 
+                  width: "32px", 
+                  height: "32px", 
+                  borderRadius: "50%", 
+                  backgroundColor: "#10b981", 
+                  color: "white", 
+                  display: "flex", 
+                  alignItems: "center", 
+                  justifyContent: "center",
+                  fontWeight: "bold",
+                  textTransform: "uppercase"
+                }}>
+                  {currentUser.displayName ? currentUser.displayName.charAt(0) : currentUser.email?.charAt(0) || "U"}
+                </div>
+                <button onClick={handleLogout} className="text-red-400 hover:text-red-300 transition-colors" title="Logout">
+                  <LogOut className="size-5" />
+                </button>
+              </div>
+            ) : (
+              <button onClick={() => onNavigateTo("/login")} className="text-sm font-semibold text-white hover:text-gray-300 transition-colors bg-white/10 px-6 py-2.5 rounded-sm hover:bg-white/20">Login</button>
+            )}
           </div>
 
           <button className="md:hidden text-white" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
@@ -122,8 +162,30 @@ export default function HeroSection({ onNavigateTo }: HeroSectionProps) {
               <a key={link.label} href={link.href} onClick={() => setMobileMenuOpen(false)} className="text-sm font-medium text-gray-300 py-2 border-b border-white/5">{link.label}</a>
             ))}
             <div className="flex flex-col gap-3 mt-4">
-              <button onClick={() => { setMobileMenuOpen(false); onNavigateTo("/login"); }} className="w-full block text-center py-3 rounded-md border border-white/20 text-white text-sm font-semibold">Login</button>
-              <button className="w-full text-center py-3 rounded-md bg-white text-black text-sm font-semibold">Sign Up</button>
+              {currentUser ? (
+                <>
+                  <div className="flex items-center justify-center gap-3 py-2">
+                    <div style={{ 
+                      width: "32px", 
+                      height: "32px", 
+                      borderRadius: "50%", 
+                      backgroundColor: "#10b981", 
+                      color: "white", 
+                      display: "flex", 
+                      alignItems: "center", 
+                      justifyContent: "center",
+                      fontWeight: "bold",
+                      textTransform: "uppercase"
+                    }}>
+                      {currentUser.displayName ? currentUser.displayName.charAt(0) : currentUser.email?.charAt(0) || "U"}
+                    </div>
+                    <span className="text-white text-sm font-semibold">Logged In</span>
+                  </div>
+                  <button onClick={() => { setMobileMenuOpen(false); handleLogout(); }} className="w-full block text-center py-3 rounded-md bg-red-500/10 text-red-500 text-sm font-semibold">Logout</button>
+                </>
+              ) : (
+                <button onClick={() => { setMobileMenuOpen(false); onNavigateTo("/login"); }} className="w-full block text-center py-3 rounded-md bg-white text-black text-sm font-semibold">Login</button>
+              )}
             </div>
           </motion.div>
         )}
