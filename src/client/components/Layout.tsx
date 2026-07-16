@@ -1,6 +1,8 @@
-import { BarChart3, Bell, Bot, House, LayoutDashboard, Moon, ScanEye, ShieldAlert, Sun, UserSearch } from "lucide-react";
+import { BarChart3, Bell, Bot, House, LayoutDashboard, Moon, ScanEye, ShieldAlert, Sun, UserSearch, LogOut } from "lucide-react";
 import type { ReactNode } from "react";
 import type { SystemNotification } from "../../shared/types";
+import { User, signOut } from "firebase/auth";
+import { auth } from "../firebase";
 
 interface LayoutProps {
   role: "admin" | "staff" | "user";
@@ -18,6 +20,7 @@ interface LayoutProps {
   activeView?: "dashboard" | "cctv" | "collapse" | "restricted" | "assistant" | "analytics";
   notifications?: SystemNotification[];
   onNotificationClick?: () => void;
+  currentUser?: User | null;
   children: ReactNode;
 }
 
@@ -39,9 +42,18 @@ export function Layout({
   activeView = "dashboard",
   notifications = [],
   onNotificationClick,
+  currentUser,
   children
 }: LayoutProps) {
   const unreadCount = notifications.filter((notification) => !notification.read).length;
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error("Error signing out", error);
+    }
+  };
 
   return (
     <main className="shell" id="dashboard">
@@ -114,6 +126,28 @@ export function Layout({
         <button className="icon-button" onClick={onThemeToggle} aria-label="Toggle color theme" title="Toggle color theme">
           {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
         </button>
+
+        {currentUser && (
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginLeft: "1rem" }}>
+            <div style={{ 
+              width: "32px", 
+              height: "32px", 
+              borderRadius: "50%", 
+              backgroundColor: "var(--color-primary)", 
+              color: "white", 
+              display: "flex", 
+              alignItems: "center", 
+              justifyContent: "center",
+              fontWeight: "bold",
+              textTransform: "uppercase"
+            }}>
+              {currentUser.displayName ? currentUser.displayName.charAt(0) : currentUser.email?.charAt(0) || "U"}
+            </div>
+            <button className="icon-button text-red-500" onClick={handleLogout} aria-label="Log out" title="Log out">
+              <LogOut size={18} />
+            </button>
+          </div>
+        )}
       </header>
       {children}
     </main>

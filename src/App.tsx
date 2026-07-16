@@ -43,6 +43,8 @@ import MedicalDashboard from "./client/components/borrow/dashboards/MedicalDashb
 import DisasterManagementDashboard from "./client/components/borrow/dashboards/DisasterManagementDashboard";
 import OperationalCenterDashboard from "./client/components/borrow/dashboards/OperationalCenterDashboard";
 import UnifiedCommandDashboard from "./client/components/borrow/dashboards/UnifiedCommandDashboard";
+import { auth } from "./client/firebase";
+import { onAuthStateChanged, User } from "firebase/auth";
 
 const defaultNodeTypes: Node["type"][] = [
   "room",
@@ -63,6 +65,8 @@ export default function App() {
   const [state, setState] = useState<AppState>(() => createSampleState());
   const [nodeTypes, setNodeTypes] = useState<Node["type"][]>(defaultNodeTypes);
   const [authenticated, setAuthenticated] = useState(false);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [authLoading, setAuthLoading] = useState(true);
   const [role, setRole] = useState<"admin" | "staff" | "user">("admin");
   const [theme, setTheme] = useState<"light" | "dark">(() => (localStorage.getItem("resq-theme") as "light" | "dark") || "dark");
   const [selectedNodeId, setSelectedNodeId] = useState<string>("junction-main");
@@ -81,6 +85,15 @@ export default function App() {
   const [alertConfig, setAlertConfig] = useState<AlertConfig | null>(() => loadAlertConfig());
   const [alertSetupOpen, setAlertSetupOpen] = useState(false);
   const [path, setPath] = useState(() => window.location.pathname);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+      setAuthenticated(!!user);
+      setAuthLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -331,12 +344,20 @@ export default function App() {
   const isCityPage = path === "/city" || path.startsWith("/city/");
 
   function handleLogin(loginRole: "admin" | "staff" | "user") {
-    setAuthenticated(true);
+    // The auth state is now handled by onAuthStateChanged.
+    // This is called from LoginPage after successful Firebase login.
     setRole(loginRole);
-    if (loginRole === "user") {
-      navigate("/dashboard");
-    } else {
-      navigate("/select-mode");
+    navigate("/");
+  }
+
+  if (authLoading) {
+    return <div className="min-h-screen flex items-center justify-center bg-[#083a2a] text-white">Loading...</div>;
+  }
+
+  // Route protection
+  if (!authenticated && (isCityPage || path.startsWith("/dashboard") || path === "/select-mode")) {
+    if (path !== "/login") {
+      navigate("/login");
     }
   }
 
@@ -386,6 +407,7 @@ export default function App() {
       <Layout
         role={role}
         theme={theme}
+        currentUser={currentUser}
         onRoleChange={setRole}
         onThemeToggle={() => setTheme(theme === "dark" ? "light" : "dark")}
         onHome={() => navigate("/")}

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { ShieldCheck, CircleHelp, User, Lock, Eye, LogIn, Loader2, AlertCircle } from "lucide-react";
+import { ShieldCheck, CircleHelp, LogIn, Loader2, AlertCircle } from "lucide-react";
+import { signInWithPopup } from "firebase/auth";
+import { auth, googleProvider } from "../firebase";
 
 interface LoginPageProps {
   onLogin: (role: "admin" | "staff" | "user") => void;
@@ -17,18 +19,11 @@ export function LoginPage({ onLogin, onHome }: LoginPageProps) {
     setIsLoading(true);
     setError("");
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    const normalizedEmail = email.toLowerCase().trim();
-
-    if (normalizedEmail === "admin") {
-      onLogin("admin");
-    } else if (normalizedEmail === "staff") {
-      onLogin("staff");
-    } else if (normalizedEmail === "user") {
-      onLogin("user");
-    } else {
-      setError("Invalid credentials. Access denied.");
+    try {
+      await signInWithPopup(auth, googleProvider);
+      onLogin("admin"); // Defaulting to admin role upon successful login
+    } catch (err: any) {
+      setError(err.message || "Authentication failed.");
       setIsLoading(false);
     }
   };
@@ -104,79 +99,10 @@ export function LoginPage({ onLogin, onHome }: LoginPageProps) {
               </div>
             )}
 
-            {/* Email / ID */}
-            <div className="space-y-2">
-              <label className="text-xs font-bold tracking-widest uppercase text-gray-600 ml-1">
-                Officer ID / Email
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <User className="size-5 text-gray-400" />
-                </div>
-                <input
-                  type="text"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin | staff | user"
-                  className="w-full bg-gray-100 border border-transparent text-gray-900 text-base rounded-xl py-4 pl-12 pr-4 focus:outline-none font-medium placeholder:text-gray-400"
-                  style={{ display: "block", width: "100%", boxSizing: "border-box", background: "#f3f4f6", borderRadius: "0.75rem", padding: "1rem 1rem 1rem 3rem", fontSize: "1rem", color: "#111827", border: "1px solid transparent" }}
-                />
-              </div>
-            </div>
-
-            {/* Password */}
-            <div className="space-y-2">
-              <label className="text-xs font-bold tracking-widest uppercase text-gray-600 ml-1">
-                Password
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Lock className="size-5 text-gray-400" />
-                </div>
-                <input
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••••••"
-                  className="w-full focus:outline-none font-medium placeholder:text-gray-400"
-                  style={{ display: "block", width: "100%", boxSizing: "border-box", background: "#f3f4f6", borderRadius: "0.75rem", padding: "1rem 3rem 1rem 3rem", fontSize: "1rem", color: "#111827", border: "1px solid transparent", letterSpacing: "0.1em" }}
-                />
-                <button
-                  type="button"
-                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
-                  style={{ background: "none", border: "none", cursor: "pointer" }}
-                >
-                  <Eye className="size-5" />
-                </button>
-              </div>
-            </div>
-
-            {/* Toggles & Links */}
-            <div className="flex items-center justify-between pt-2">
-              <label className="flex items-center gap-3 cursor-pointer group">
-                <div className="relative">
-                  <input type="checkbox" className="sr-only" defaultChecked />
-                  <div className="block bg-[#0c4a34] w-12 h-6 rounded-full transition-colors group-active:bg-[#0c4a34]/80"></div>
-                  <div className="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform translate-x-6"></div>
-                </div>
-                <span className="text-sm font-semibold text-gray-700">
-                  Multi-Factor Auth
-                </span>
-              </label>
-
-              <a
-                href="#"
-                className="text-sm font-semibold text-gray-700 hover:text-[#0c4a34] transition-colors"
-              >
-                Forgot Password?
-              </a>
-            </div>
-
             {/* Submit Button */}
             <button
-              type="submit"
+              type="button"
+              onClick={handleLogin}
               disabled={isLoading}
               className="w-full bg-[#0c4a34] hover:bg-[#0f5a43] text-white rounded-xl py-4 flex items-center justify-center gap-2 font-bold text-lg mt-8 transition-colors shadow-lg shadow-emerald-900/20 disabled:opacity-80 disabled:cursor-not-allowed"
               style={{ border: "none", cursor: isLoading ? "not-allowed" : "pointer" }}
@@ -188,7 +114,7 @@ export function LoginPage({ onLogin, onHome }: LoginPageProps) {
                 </>
               ) : (
                 <>
-                  Sign In
+                  Sign in with Google
                   <LogIn className="size-5" />
                 </>
               )}
@@ -198,21 +124,12 @@ export function LoginPage({ onLogin, onHome }: LoginPageProps) {
           {/* Demo Credentials Box */}
           <div className="mt-8 bg-blue-50 border border-blue-100 rounded-xl p-4 text-sm text-blue-900">
             <h4 className="font-bold flex items-center gap-2 mb-2">
-              <CircleHelp className="size-4" /> Demo Credentials
+              <CircleHelp className="size-4" /> Secure Access
             </h4>
-            <p className="text-blue-800/80 mb-3">Try logging in with the following IDs (password can be anything):</p>
-            <ul className="space-y-1 font-mono text-xs font-semibold">
-              <li className="flex justify-between">
-                <span>admin</span> <span className="text-blue-500">-&gt; Admin Dashboard</span>
-              </li>
-              <li className="flex justify-between">
-                <span>staff</span> <span className="text-blue-500">-&gt; Staff Dashboard</span>
-              </li>
-              <li className="flex justify-between">
-                <span>user</span> <span className="text-blue-500">-&gt; User Dashboard</span>
-              </li>
-            </ul>
+            <p className="text-blue-800/80 mb-3">Please use your Google account to log into the secure dashboard. You will automatically be granted Admin access.</p>
           </div>
+
+
         </div>
 
         {/* Footer */}
