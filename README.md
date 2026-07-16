@@ -90,6 +90,8 @@ DXF files are parsed directly for preview geometry, including lines, lightweight
 * Admin dashboard: upload map, place/edit/delete nodes, connect graph edges, simulate hazards, simulate BLE/QR people locations, calculate route, and review final nodes.
 * Staff dashboard: monitor active hazards, people locations, route state, exits, and response actions.
 * User dashboard: pick a simulated user, confirm QR checkpoint, and view step-by-step evacuation guidance.
+* **Firebase Authentication:** Secure Google Sign-In and robust session management.
+* **Extensive REST API:** 26 specialized endpoints powering CAD processing, routing, live hazard detection, AI model streaming, and more.
 * Dark and light theme toggle.
 * Sample hotel floor map with rooms, corridors, exits, devices, BLE beacon, QR checkpoint, and people.
 * Route engine blocks unsafe nodes/edges and evaluates all exits.
