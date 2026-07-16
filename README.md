@@ -2,15 +2,17 @@
 
 <img src="public/logo.png" alt="ResQ Logo" width="160" />
 
-<a href="" target="_blank">
-  <img src="https://img.youtube.com/vi/YOUR_VIDEO_ID/maxresdefault.jpg" alt="Watch the video" width="500" />
-</a>
+<video width="800" controls autoplay muted loop style="border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+  <source src="public/ResQvideo.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
 
 # ResQ
 
 ### AI-Powered Multi-Hazard Emergency Intelligence & Response System
 
-![Next.js](https://img.shields.io/badge/Next.js-16-000000?style=for-the-badge\&logo=next.js)
+![React.js](https://img.shields.io/badge/React.js-19-000000?style=for-the-badge\&logo=react)
+![Vite](https://img.shields.io/badge/Vite-8-646CFF?style=for-the-badge\&logo=vite)
 ![YOLOv8](https://img.shields.io/badge/YOLOv8-Edge_AI-00CFFF?style=for-the-badge\&logo=python)
 ![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?style=for-the-badge\&logo=fastapi)
 ![Firebase](https://img.shields.io/badge/Firebase-Realtime-FFCA28?style=for-the-badge\&logo=firebase)
@@ -261,7 +263,7 @@ Video → YOLO → Detection → API → WebSocket → Dashboard
 
 | Layer    | Technology            |
 | -------- | --------------------- |
-| Frontend | Next.js 16 + Tailwind |
+| Frontend | React 19 + Vite + Tailwind |
 | Backend  | FastAPI               |
 | AI/ML    | YOLOv8 (Ultralytics)  |
 | Realtime | WebSockets            |
