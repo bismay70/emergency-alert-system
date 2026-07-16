@@ -3,8 +3,7 @@
 <img src="public/logo.png" alt="ResQ Logo" width="160" />
 
 <video width="800" controls autoplay muted loop style="border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
-  <source src="public/ResQvideo.mp4" type="video/mp4">
-  Your browser does not support the video tag.
+  <source src="https://res.cloudinary.com/dbnnd43kl/video/upload/v1784194291/ResQvideo_jufspn.mp4" type="video/mp4">
 </video>
 
 # ResQ
